@@ -1,0 +1,1697 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Daily Chronicle & Planner</title>
+  <style>
+    :root{
+      --paper:#F2E8C4;
+      --ink:#3B3228;
+      --crimson:#A63A2D;
+      --navy:#3E4E6C;
+      --emerald:#2F4F2F;
+      --gold:#C7A948;
+      --sienna:#BC6D38;
+      --plum:#7A5E7B;
+
+      --shadow: rgba(59,50,40,.25);
+      --line: rgba(59,50,40,.35);
+      --line2: rgba(59,50,40,.18);
+      --panel: rgba(242,232,196,.72);
+      --panel2: rgba(242,232,196,.55);
+      --brass1: #d8c27a;
+      --brass2: #b79b3d;
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      background:
+        radial-gradient(1200px 900px at 20% 15%, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(900px 800px at 80% 20%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(700px 650px at 55% 85%, rgba(255,255,255,.18), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,.05), transparent 25%, transparent 75%, rgba(0,0,0,.07)),
+        repeating-linear-gradient(90deg, rgba(59,50,40,.03) 0 1px, transparent 1px 6px),
+        repeating-linear-gradient(0deg, rgba(59,50,40,.02) 0 1px, transparent 1px 5px),
+        var(--paper);
+      background-attachment: fixed;
+    }
+
+    /* subtle "foxing" */
+    body:before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(60px 60px at 8% 18%, rgba(188,109,56,.12), transparent 60%),
+        radial-gradient(80px 70px at 14% 76%, rgba(188,109,56,.09), transparent 65%),
+        radial-gradient(90px 80px at 88% 24%, rgba(188,109,56,.10), transparent 66%),
+        radial-gradient(70px 70px at 92% 82%, rgba(188,109,56,.08), transparent 62%),
+        radial-gradient(500px 420px at 0% 0%, rgba(59,50,40,.12), transparent 55%),
+        radial-gradient(520px 450px at 100% 0%, rgba(59,50,40,.10), transparent 55%),
+        radial-gradient(520px 450px at 0% 100%, rgba(59,50,40,.10), transparent 55%),
+        radial-gradient(520px 450px at 100% 100%, rgba(59,50,40,.12), transparent 55%);
+      mix-blend-mode:multiply;
+      opacity:.7;
+    }
+
+    a{color:inherit}
+
+    .wrap{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 22px 14px 60px;
+    }
+
+    header{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      padding: 12px 14px 18px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(62,78,108,.15), rgba(242,232,196,.15));
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px var(--shadow);
+      position:sticky;
+      top:10px;
+      z-index:5;
+      backdrop-filter: blur(6px);
+    }
+
+    .title{
+      line-height:1.1;
+    }
+    .title h1{
+      margin:0;
+      letter-spacing:.6px;
+      font-size: clamp(22px, 3.2vw, 34px);
+      font-weight:800;
+      text-transform: uppercase;
+    }
+    .title .sub{
+      margin-top:6px;
+      font-size: 14px;
+      opacity:.82;
+    }
+
+    .topActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      cursor:pointer;
+      user-select:none;
+      border-radius: 999px;
+      padding: 10px 12px;
+      border:1px solid rgba(59,50,40,.40);
+      background:
+        linear-gradient(180deg, rgba(199,169,72,.30), rgba(199,169,72,.12));
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.35),
+        0 6px 14px var(--shadow);
+      font-weight:700;
+      font-size: 13px;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.secondary{
+      background: linear-gradient(180deg, rgba(62,78,108,.20), rgba(62,78,108,.10));
+    }
+    .btn.danger{
+      background: linear-gradient(180deg, rgba(166,58,45,.28), rgba(166,58,45,.10));
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 16px;
+      margin-top: 16px;
+      align-items:start;
+    }
+
+    .panel{
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 26px var(--shadow);
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      overflow:hidden;
+      position:relative;
+    }
+
+    .panelHead{
+      padding: 12px 14px;
+      background:
+        linear-gradient(180deg, rgba(59,50,40,.10), transparent),
+        linear-gradient(90deg, rgba(166,58,45,.22), rgba(62,78,108,.18));
+      border-bottom: 1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panelHead h2{
+      margin:0;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: .9px;
+      font-weight: 900;
+    }
+    .panelHead .meta{
+      font-size: 12px;
+      opacity:.85;
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    /* Schedule */
+    .schedule{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: 72px 1fr;
+      gap: 10px;
+    }
+    .timeCol{
+      border-right: 1px solid var(--line);
+      padding-right: 8px;
+    }
+    .timeTick{
+      height: 52px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-end;
+      font-weight:800;
+      font-size: 12px;
+      opacity:.9;
+      position:relative;
+    }
+    .timeTick:after{
+      content:"";
+      position:absolute;
+      left: 86px;
+      right: -10px;
+      top: 0;
+      border-top: 1px solid var(--line);
+      opacity:.9;
+    }
+    .timeTick .half{
+      content:"";
+      position:absolute;
+      left: 86px;
+      right: -10px;
+      top: 26px;
+      border-top: 1px dashed var(--line2);
+    }
+
+    .lane{
+      position:relative;
+      height: calc(52px * 16); /* 8..23 => 16 hours */
+      border-left: 1px solid transparent;
+    }
+
+    .nowLine{
+      position:absolute;
+      left:0; right:0;
+      height: 0;
+      border-top: 2px solid rgba(47,79,47,.55);
+      filter: drop-shadow(0 2px 0 rgba(59,50,40,.18));
+      pointer-events:none;
+    }
+    .nowLine:after{
+      content:"NOW";
+      position:absolute;
+      right: 8px;
+      top:-10px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing:.8px;
+      background: rgba(47,79,47,.18);
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(47,79,47,.35);
+    }
+
+    .taskBlock{
+      position:absolute;
+      left: 8px;
+      right: 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(59,50,40,.40);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 10px 18px rgba(59,50,40,.18);
+      padding: 8px 10px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .taskBlock .top{
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      font-size: 13px;
+    }
+    .taskBlock .small{
+      font-size: 12px;
+      opacity:.9;
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(59,50,40,.35);
+      background: rgba(242,232,196,.35);
+      font-weight:800;
+      font-size:11px;
+    }
+    .pill.mendo{
+      background: rgba(166,58,45,.12);
+      border-color: rgba(166,58,45,.35);
+    }
+    .pill.done{
+      background: rgba(47,79,47,.14);
+      border-color: rgba(47,79,47,.35);
+    }
+    .taskBlock .note{
+      font-size: 12px;
+      opacity:.88;
+      font-style: italic;
+      line-height:1.2;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+    }
+
+    /* Calendar */
+    .calendar{
+      padding: 12px 12px 14px;
+    }
+    .calGrid{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+    .calDow{
+      font-weight: 900;
+      font-size: 11px;
+      opacity:.85;
+      letter-spacing:.8px;
+      text-align:center;
+      text-transform:uppercase;
+      padding: 2px 0 6px;
+    }
+    .dayCell{
+      min-height: 74px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(242,232,196,.35);
+      padding: 8px 8px 10px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.28);
+      position:relative;
+      overflow:hidden;
+    }
+    .dayCell .d{
+      font-weight: 900;
+      font-size: 12px;
+      opacity:.92;
+    }
+    .dayCell.today{
+      outline: 2px solid rgba(199,169,72,.65);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 10px 20px rgba(59,50,40,.16);
+    }
+    .preview{
+      margin-top: 6px;
+      font-size: 10px;
+      line-height:1.25;
+      opacity:.92;
+    }
+    .preview .dot{
+      width:6px;height:6px;border-radius:50%;
+      display:inline-block;margin-right:6px; transform: translateY(1px);
+      border: 1px solid rgba(59,50,40,.35);
+    }
+    .previewItem{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; margin-top:3px;}
+    .dayCell.muted{
+      opacity:.55;
+      filter:saturate(.9);
+    }
+
+    /* Below fold */
+    .below{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      font-size: 13px;
+    }
+    th,td{
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align:top;
+    }
+    th{
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      font-size: 11px;
+      text-align:left;
+      background: rgba(59,50,40,.06);
+    }
+    tr:last-child td{border-bottom:none}
+    .rowSwatch{
+      display:flex; align-items:center; gap:10px;
+    }
+    .swatch{
+      width: 14px; height: 14px;
+      border-radius: 4px;
+      border: 1px solid rgba(59,50,40,.35);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+      flex: 0 0 auto;
+    }
+    .rowTitle{
+      font-weight: 900;
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .tinyBtn{
+      cursor:pointer;
+      border-radius: 999px;
+      border: 1px solid rgba(59,50,40,.35);
+      padding: 4px 8px;
+      background: rgba(242,232,196,.35);
+      font-weight: 900;
+      font-size: 11px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+      white-space:nowrap;
+    }
+    .tinyBtn:active{transform: translateY(1px)}
+    .tinyBtn.done{background: rgba(47,79,47,.14); border-color: rgba(47,79,47,.35)}
+    .tinyBtn.goal{background: rgba(62,78,108,.12); border-color: rgba(62,78,108,.35)}
+    .tinyBtn.mendo{background: rgba(166,58,45,.12); border-color: rgba(166,58,45,.35)}
+
+    /* Pie */
+    .pieWrap{
+      display:grid;
+      gap: 12px;
+      padding: 14px;
+    }
+    .pie{
+      width: min(320px, 100%);
+      aspect-ratio:1/1;
+      border-radius: 50%;
+      border: 2px solid rgba(59,50,40,.45);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 14px 26px rgba(59,50,40,.22);
+      margin: 10px auto 0;
+      position:relative;
+      background: conic-gradient(from 0deg, rgba(59,50,40,.10) 0 360deg);
+    }
+    .pie:after{
+      content:"";
+      position:absolute;
+      inset: 18%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 60%),
+        rgba(242,232,196,.70);
+      border: 1px solid rgba(59,50,40,.30);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .pieLabel{
+      position:absolute;
+      left:50%; top:50%;
+      transform: translate(-50%,-50%);
+      text-align:center;
+      z-index:2;
+      width: 70%;
+    }
+    .pieLabel .pct{
+      font-size: 30px;
+      font-weight: 1000;
+      letter-spacing:.6px;
+    }
+    .pieLabel .desc{
+      font-size: 12px;
+      text-transform:uppercase;
+      letter-spacing:.9px;
+      opacity:.85;
+      font-weight:900;
+      margin-top: 6px;
+    }
+    .legend{
+      display:grid;
+      gap: 6px;
+      font-size: 12px;
+      opacity:.95;
+      margin-top: 10px;
+    }
+    .legendItem{
+      display:flex; gap:8px; align-items:center;
+    }
+    .legendItem .sw{width:10px;height:10px;border-radius:3px;border:1px solid rgba(59,50,40,.35)}
+    .muted{opacity:.75}
+
+    /* Goals */
+    .goals{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .goalItem{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(242,232,196,.35);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.28);
+    }
+    .goalTop{
+      display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap;
+    }
+    .goalTop .name{
+      font-weight: 1000;
+      letter-spacing:.2px;
+    }
+    .goalTop .nums{
+      font-size: 12px;
+      opacity:.85;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .bar{
+      height: 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(59,50,40,.35);
+      background: rgba(242,232,196,.55);
+      margin-top: 10px;
+      overflow:hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .fill{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(199,169,72,.75), rgba(47,79,47,.55));
+      border-right: 1px solid rgba(59,50,40,.25);
+    }
+    .goalActions{
+      margin-top: 10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    /* Modals */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(20,16,12,.45);
+      backdrop-filter: blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 14px;
+      z-index:50;
+    }
+    .overlay.show{display:flex}
+    .modal{
+      width: min(720px, 100%);
+      border-radius: 18px;
+      border: 1px solid rgba(242,232,196,.35);
+      background:
+        radial-gradient(900px 500px at 20% 0%, rgba(255,255,255,.20), transparent 50%),
+        linear-gradient(180deg, rgba(242,232,196,.90), rgba(242,232,196,.78));
+      box-shadow: 0 22px 55px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .modalHead{
+      padding: 14px 14px;
+      background: linear-gradient(90deg, rgba(166,58,45,.22), rgba(62,78,108,.18));
+      border-bottom: 1px solid rgba(59,50,40,.35);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .modalHead h3{
+      margin:0;
+      text-transform: uppercase;
+      letter-spacing: .9px;
+      font-weight: 1000;
+      font-size: 14px;
+    }
+    .x{
+      cursor:pointer;
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      border: 1px solid rgba(59,50,40,.35);
+      background: rgba(242,232,196,.45);
+      display:grid; place-items:center;
+      font-weight:1000;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .modalBody{padding: 14px}
+    .fieldGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .field{
+      display:grid;
+      gap: 6px;
+    }
+    label{
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      font-weight: 1000;
+      opacity:.9;
+    }
+    input, textarea, select{
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(59,50,40,.35);
+      padding: 10px 10px;
+      background: rgba(242,232,196,.65);
+      color: var(--ink);
+      font: inherit;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    textarea{min-height:84px; resize: vertical}
+    .row{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .row .btn{padding: 10px 14px}
+    .hint{
+      font-size: 12px;
+      opacity:.86;
+      line-height:1.35;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(59,50,40,.35);
+      background: rgba(242,232,196,.45);
+      font-weight: 900;
+      font-size: 12px;
+    }
+    .chip input{width:auto; accent-color: var(--emerald)}
+    .listBox{
+      margin-top: 10px;
+      border: 1px solid rgba(59,50,40,.35);
+      border-radius: 14px;
+      background: rgba(242,232,196,.42);
+      overflow:hidden;
+    }
+    .listBox .item{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(59,50,40,.22);
+      align-items:center;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .listBox .item:last-child{border-bottom:none}
+    .item .sub{
+      font-weight: 700;
+      opacity:.85;
+      font-size: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .grid{grid-template-columns: 1fr}
+      .below{grid-template-columns: 1fr}
+      header{position:relative; top:auto}
+    }
+    @media (max-width: 520px){
+      .schedule{grid-template-columns: 58px 1fr}
+      .timeTick:after, .timeTick .half{left: 68px}
+      .panelHead{flex-direction:column; align-items:flex-start}
+      .panelHead .meta{text-align:left}
+      .fieldGrid{grid-template-columns: 1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>The Daily Chronicle & Planner</h1>
+        <div class="sub" id="todayLine">Loading…</div>
+      </div>
+      <div class="topActions">
+        <div class="btn secondary" id="btnChangeDay">Change Day</div>
+        <div class="btn" id="btnAddTasks">Add / Edit Today</div>
+        <div class="btn secondary" id="btnAddGoal">Add Goal</div>
+        <div class="btn danger" id="btnExport">Export</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="panel" aria-label="Today's engagements">
+        <div class="panelHead">
+          <h2>Today's Engagements</h2>
+          <div class="meta">
+            <div id="dayMeta">8:00 → 23:00</div>
+            <div class="muted" id="taskCount">0 tasks</div>
+          </div>
+        </div>
+        <div class="schedule">
+          <div class="timeCol" id="timeCol"></div>
+          <div class="lane" id="lane">
+            <div class="nowLine" id="nowLine" style="display:none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Monthly ledger">
+        <div class="panelHead">
+          <h2>The Monthly Ledger</h2>
+          <div class="meta">
+            <div id="monthMeta">…</div>
+            <div class="muted">Tiny previews, because humans love squinting.</div>
+          </div>
+        </div>
+        <div class="calendar">
+          <div class="calGrid" id="dow"></div>
+          <div class="calGrid" id="calGrid"></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="below">
+      <section class="panel" aria-label="Detailed manifest">
+        <div class="panelHead">
+          <h2>Detailed Manifest & Review</h2>
+          <div class="meta">
+            <div class="muted">Connect tasks to goals, mark done, take notes.</div>
+          </div>
+        </div>
+        <div style="padding:14px; overflow:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40%">The Undertaking</th>
+                <th style="width:18%">Hour</th>
+                <th style="width:14%">Duration</th>
+                <th>Notes & Observations</th>
+              </tr>
+            </thead>
+            <tbody id="detailBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Today's success">
+        <div class="panelHead">
+          <h2>Today's Success</h2>
+          <div class="meta">
+            <div id="successMeta" class="muted">0% complete</div>
+          </div>
+        </div>
+        <div class="pieWrap">
+          <div class="pie" id="pie">
+            <div class="pieLabel">
+              <div class="pct" id="piePct">0%</div>
+              <div class="desc">Complete</div>
+            </div>
+          </div>
+          <div class="legend" id="legend"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="panel" style="margin-top:16px" aria-label="Projects & goals">
+      <div class="panelHead">
+        <h2>Projects & Goals</h2>
+        <div class="meta">
+          <div class="muted">The parts of life you pretend are permanent.</div>
+        </div>
+      </div>
+      <div style="padding:14px">
+        <div class="goals" id="goals"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Password Gate -->
+  <div class="overlay" id="gate">
+    <div class="modal">
+      <div class="modalHead">
+        <h3>Enter Password</h3>
+        <div class="x" id="gateX" title="Nope">×</div>
+      </div>
+      <div class="modalBody">
+        <div class="hint">
+          This is a client-side password gate. It blocks casual snooping, not determined people with browser devtools.
+          If you want real security, you need a server. Humans love skipping that part.
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div class="field" style="flex:1">
+            <label>Password</label>
+            <input type="password" id="pw" placeholder="••••••••" autocomplete="off">
+          </div>
+          <div class="btn" id="pwGo">Unlock</div>
+        </div>
+        <div class="hint" id="pwErr" style="color:var(--crimson); margin-top:10px; display:none">Wrong password.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add tasks modal -->
+  <div class="overlay" id="taskModal">
+    <div class="modal">
+      <div class="modalHead">
+        <h3>What is on your plate today?</h3>
+        <div class="x" data-close="taskModal">×</div>
+      </div>
+      <div class="modalBody">
+        <div class="hint">
+          Add tasks one by one. Start time is between 08:00 and 23:00.
+          Duration can spill over if you insist, but the schedule ends at 23:00 because sleep is allegedly a thing.
+        </div>
+
+        <div class="fieldGrid" style="margin-top:12px">
+          <div class="field">
+            <label>Task Title</label>
+            <input id="tTitle" placeholder="e.g., Film for my student (Part 1)">
+          </div>
+          <div class="field">
+            <label>Color Mood</label>
+            <select id="tColor">
+              <option value="crimson">Crimson Suit</option>
+              <option value="navy">Schemer's Navy</option>
+              <option value="emerald">Emerald Library</option>
+              <option value="gold">Mustard Gold</option>
+              <option value="sienna">Burnt Sienna</option>
+              <option value="plum">Muted Plum</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Start Time</label>
+            <input id="tStart" type="time" value="08:00">
+          </div>
+          <div class="field">
+            <label>Duration (minutes)</label>
+            <input id="tDur" type="number" min="5" step="5" value="60">
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:10px">
+          <label>Notes</label>
+          <textarea id="tNote" placeholder="Optional. Future-you is going to ignore this anyway."></textarea>
+        </div>
+
+        <div class="row">
+          <label class="chip"><input type="checkbox" id="tMendo"> Mendokusai Start (I’ve been avoiding this)</label>
+          <div style="flex:1"></div>
+          <div class="btn secondary" id="tAdd">Add Task</div>
+        </div>
+
+        <div class="listBox" id="taskListBox" style="margin-top:12px"></div>
+
+        <div class="row" style="margin-top:12px">
+          <div class="btn danger" id="tClear">Clear Today</div>
+          <div style="flex:1"></div>
+          <div class="btn" data-close="taskModal">Done</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change day modal -->
+  <div class="overlay" id="dayModal">
+    <div class="modal">
+      <div class="modalHead">
+        <h3>Change Day</h3>
+        <div class="x" data-close="dayModal">×</div>
+      </div>
+      <div class="modalBody">
+        <div class="hint">Pick a date to view or edit. Tasks are stored per day (in your browser).</div>
+        <div class="row" style="margin-top:12px">
+          <div class="field" style="flex:1">
+            <label>Date</label>
+            <input type="date" id="pickDate">
+          </div>
+          <div class="btn" id="goDate">Go</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goal picker modal -->
+  <div class="overlay" id="goalPickModal">
+    <div class="modal">
+      <div class="modalHead">
+        <h3>Connect Task to Goal</h3>
+        <div class="x" data-close="goalPickModal">×</div>
+      </div>
+      <div class="modalBody">
+        <div class="hint">Choose a goal. Completed task duration will be added to it (hours).</div>
+        <div class="listBox" id="goalPickList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add goal modal -->
+  <div class="overlay" id="goalModal">
+    <div class="modal">
+      <div class="modalHead">
+        <h3>Add a Goal</h3>
+        <div class="x" data-close="goalModal">×</div>
+      </div>
+      <div class="modalBody">
+        <div class="fieldGrid">
+          <div class="field">
+            <label>Goal Name</label>
+            <input id="gName" placeholder="e.g., 100 hours of Japanese learning">
+          </div>
+          <div class="field">
+            <label>Target (hours)</label>
+            <input id="gTarget" type="number" min="1" step="1" value="100">
+          </div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div class="btn secondary" id="gAdd">Add Goal</div>
+          <div style="flex:1"></div>
+          <div class="btn" data-close="goalModal">Done</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export modal -->
+  <div class="overlay" id="exportModal">
+    <div class="modal">
+      <div class="modalHead">
+        <h3>Export / Backup</h3>
+        <div class="x" data-close="exportModal">×</div>
+      </div>
+      <div class="modalBody">
+        <div class="hint">
+          Copy this JSON somewhere safe (a file, a note, a vault, whatever).
+          Import works by pasting JSON here and pressing “Import”.
+        </div>
+        <div class="field" style="margin-top:12px">
+          <label>Data</label>
+          <textarea id="exportBox"></textarea>
+        </div>
+        <div class="row">
+          <div class="btn secondary" id="btnCopy">Copy</div>
+          <div class="btn" id="btnImport">Import</div>
+          <div style="flex:1"></div>
+          <div class="btn" data-close="exportModal">Close</div>
+        </div>
+        <div class="hint" id="exportMsg" style="margin-top:10px; display:none"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const PASSWORD = "88106420";
+  const STORAGE_KEY = "vintage.todo.v1";
+  const HOURS_START = 8;
+  const HOURS_END = 23;
+  const PX_PER_HOUR = 52; // matches CSS timeTick height
+  const MINUTES_PER_PX = 60 / PX_PER_HOUR;
+
+  const $ = (id) => document.getElementById(id);
+
+  const colors = {
+    crimson: getCss("--crimson"),
+    navy: getCss("--navy"),
+    emerald: getCss("--emerald"),
+    gold: getCss("--gold"),
+    sienna: getCss("--sienna"),
+    plum: getCss("--plum"),
+  };
+
+  function getCss(varName){
+    return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  }
+
+  function pad(n){ return String(n).padStart(2, "0"); }
+
+  function ymd(date){
+    return date.getFullYear()+"-"+pad(date.getMonth()+1)+"-"+pad(date.getDate());
+  }
+
+  function fmtDateLong(date){
+    return date.toLocaleDateString(undefined, { weekday:"long", year:"numeric", month:"long", day:"numeric" });
+  }
+
+  function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return { days:{}, goals:[], gateUnlocked:false };
+      const s = JSON.parse(raw);
+      if(!s.days) s.days = {};
+      if(!s.goals) s.goals = [];
+      return s;
+    }catch(e){
+      return { days:{}, goals:[], gateUnlocked:false };
+    }
+  }
+
+  function saveState(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function ensureDefaults(){
+    if(!Array.isArray(state.goals) || state.goals.length===0){
+      state.goals = [
+        { id: crypto.randomUUID(), name: "100 hours of Japanese learning", targetHours: 100, currentHours: 0 },
+      ];
+    }
+    saveState();
+  }
+
+  let state = loadState();
+  ensureDefaults();
+
+  // gate
+  const gate = $("gate");
+  if(!state.gateUnlocked){
+    gate.classList.add("show");
+  }
+  $("gateX").onclick = () => { /* keep it open; people love rules */ };
+  $("pwGo").onclick = () => {
+    const v = $("pw").value.trim();
+    if(v === PASSWORD){
+      state.gateUnlocked = true;
+      saveState();
+      gate.classList.remove("show");
+      $("pwErr").style.display = "none";
+    }else{
+      $("pwErr").style.display = "block";
+    }
+  };
+  $("pw").addEventListener("keydown", (e)=>{ if(e.key==="Enter") $("pwGo").click(); });
+
+  // current day
+  let currentDate = new Date();
+  let currentKey = ymd(currentDate);
+
+  // UI init
+  buildTimeCol();
+  buildDow();
+
+  $("btnAddTasks").onclick = () => openTasksModal();
+  $("btnChangeDay").onclick = () => openModal("dayModal");
+  $("btnAddGoal").onclick = () => openModal("goalModal");
+  $("btnExport").onclick = () => openExport();
+
+  document.querySelectorAll("[data-close]").forEach(el=>{
+    el.addEventListener("click", () => closeModal(el.getAttribute("data-close")));
+  });
+
+  // Change day logic
+  $("pickDate").value = currentKey;
+  $("goDate").onclick = () => {
+    const v = $("pickDate").value;
+    if(v){
+      currentKey = v;
+      currentDate = new Date(v+"T12:00:00");
+      closeModal("dayModal");
+      renderAll();
+    }
+  };
+
+  // Add goal
+  $("gAdd").onclick = () => {
+    const name = $("gName").value.trim();
+    const target = parseFloat($("gTarget").value);
+    if(!name || !isFinite(target) || target<=0) return;
+    state.goals.push({ id: crypto.randomUUID(), name, targetHours: target, currentHours: 0 });
+    $("gName").value = "";
+    $("gTarget").value = "100";
+    saveState();
+    renderGoals();
+  };
+
+  // Export / import
+  function openExport(){
+    $("exportBox").value = JSON.stringify(state, null, 2);
+    $("exportMsg").style.display="none";
+    openModal("exportModal");
+  }
+  $("btnCopy").onclick = async () => {
+    try{
+      await navigator.clipboard.writeText($("exportBox").value);
+      msg("Copied to clipboard.", false);
+    }catch(e){
+      msg("Copy failed. Your browser is feeling dramatic. Select the text and copy manually.", true);
+    }
+  };
+  $("btnImport").onclick = () => {
+    try{
+      const v = $("exportBox").value.trim();
+      const data = JSON.parse(v);
+      if(!data || typeof data !== "object") throw new Error("bad");
+      state = data;
+      if(!state.days) state.days = {};
+      if(!state.goals) state.goals = [];
+      if(typeof state.gateUnlocked !== "boolean") state.gateUnlocked = true;
+      saveState();
+      msg("Imported. Your life is now restored from the void.", false);
+      renderAll();
+    }catch(e){
+      msg("Import failed. That JSON is not JSON-ing.", true);
+    }
+  };
+  function msg(t, bad){
+    const el = $("exportMsg");
+    el.style.display="block";
+    el.style.color = bad ? colors.crimson : colors.emerald;
+    el.textContent = t;
+  }
+
+  // Tasks storage shape
+  // state.days[YYYY-MM-DD] = { tasks: [{id,title,start,durMin,note,colorKey,mendo,done,goalId?}] }
+
+  function getDay(){
+    if(!state.days[currentKey]) state.days[currentKey] = { tasks: [] };
+    if(!Array.isArray(state.days[currentKey].tasks)) state.days[currentKey].tasks = [];
+    return state.days[currentKey];
+  }
+
+  // Modals
+  function openModal(id){ $(id).classList.add("show"); }
+  function closeModal(id){ $(id).classList.remove("show"); }
+
+  // Tasks modal interactions
+  function openTasksModal(){
+    refreshTaskListBox();
+    openModal("taskModal");
+    $("tTitle").focus();
+  }
+
+  function refreshTaskListBox(){
+    const box = $("taskListBox");
+    const day = getDay();
+    if(day.tasks.length===0){
+      box.innerHTML = `<div class="item"><div>No tasks yet.</div><div class="sub">Add one above.</div></div>`;
+      return;
+    }
+    const sorted = [...day.tasks].sort((a,b)=> a.start.localeCompare(b.start));
+    box.innerHTML = sorted.map(t => {
+      const dur = t.durMin||0;
+      return `
+        <div class="item">
+          <div>
+            ${escapeHtml(t.title || "Untitled")}
+            <div class="sub">${t.start} · ${dur} min${t.mendo ? " · Mendokusai" : ""}${t.done ? " · Done" : ""}</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center">
+            <div class="tinyBtn" data-edit="${t.id}">Edit</div>
+            <div class="tinyBtn" data-del="${t.id}">Delete</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    box.querySelectorAll("[data-del]").forEach(btn=>{
+      btn.onclick = () => {
+        const id = btn.getAttribute("data-del");
+        day.tasks = day.tasks.filter(x => x.id !== id);
+        saveState();
+        refreshTaskListBox();
+        renderAll();
+      };
+    });
+
+    box.querySelectorAll("[data-edit]").forEach(btn=>{
+      btn.onclick = () => {
+        const id = btn.getAttribute("data-edit");
+        const t = day.tasks.find(x=>x.id===id);
+        if(!t) return;
+        $("tTitle").value = t.title || "";
+        $("tColor").value = t.colorKey || "crimson";
+        $("tStart").value = t.start || "08:00";
+        $("tDur").value = t.durMin || 60;
+        $("tNote").value = t.note || "";
+        $("tMendo").checked = !!t.mendo;
+
+        // Replace add behavior temporarily
+        $("tAdd").textContent = "Save Changes";
+        $("tAdd").onclick = () => {
+          t.title = $("tTitle").value.trim() || "Untitled";
+          t.colorKey = $("tColor").value;
+          t.start = $("tStart").value;
+          t.durMin = parseInt($("tDur").value,10) || 60;
+          t.note = $("tNote").value.trim();
+          t.mendo = $("tMendo").checked;
+
+          // reset form
+          resetTaskForm();
+          $("tAdd").textContent = "Add Task";
+          $("tAdd").onclick = addTask;
+          saveState();
+          refreshTaskListBox();
+          renderAll();
+        };
+      };
+    });
+  }
+
+  function resetTaskForm(){
+    $("tTitle").value="";
+    $("tColor").value="crimson";
+    $("tStart").value="08:00";
+    $("tDur").value="60";
+    $("tNote").value="";
+    $("tMendo").checked=false;
+  }
+
+  function addTask(){
+    const title = $("tTitle").value.trim();
+    const start = $("tStart").value;
+    const durMin = parseInt($("tDur").value,10);
+    if(!title || !start || !isFinite(durMin) || durMin<=0) return;
+
+    const day = getDay();
+    day.tasks.push({
+      id: crypto.randomUUID(),
+      title,
+      start,
+      durMin,
+      note: $("tNote").value.trim(),
+      colorKey: $("tColor").value,
+      mendo: $("tMendo").checked,
+      done: false,
+      goalId: null
+    });
+    resetTaskForm();
+    saveState();
+    refreshTaskListBox();
+    renderAll();
+  }
+
+  $("tAdd").onclick = addTask;
+  $("tClear").onclick = () => {
+    const day = getDay();
+    day.tasks = [];
+    saveState();
+    refreshTaskListBox();
+    renderAll();
+  };
+
+  // Rendering
+  function renderAll(){
+    $("todayLine").textContent = fmtDateLong(currentDate);
+    $("monthMeta").textContent = currentDate.toLocaleDateString(undefined, { month:"long", year:"numeric" });
+
+    renderSchedule();
+    renderCalendar();
+    renderDetails();
+    renderGoals();
+    updateNowLine();
+  }
+
+  function buildTimeCol(){
+    const col = $("timeCol");
+    col.innerHTML = "";
+    for(let h=HOURS_START; h<HOURS_END; h++){
+      const tick = document.createElement("div");
+      tick.className = "timeTick";
+      const label = document.createElement("div");
+      label.textContent = `${h}:00`;
+      tick.appendChild(label);
+
+      const half = document.createElement("div");
+      half.className = "half";
+      tick.appendChild(half);
+
+      col.appendChild(tick);
+    }
+  }
+
+  function renderSchedule(){
+    const lane = $("lane");
+    // clear old blocks except nowLine
+    lane.querySelectorAll(".taskBlock").forEach(n => n.remove());
+
+    const day = getDay();
+    const tasks = [...day.tasks].sort((a,b)=> a.start.localeCompare(b.start));
+    $("taskCount").textContent = `${tasks.length} task${tasks.length===1?"":"s"}`;
+
+    // overlap detection to offset horizontally
+    const placed = [];
+    tasks.forEach(t=>{
+      const startMin = toMinutes(t.start);
+      const endMin = startMin + (t.durMin||0);
+      const s = clamp(startMin, HOURS_START*60, HOURS_END*60);
+      const e = clamp(endMin, HOURS_START*60, HOURS_END*60);
+      const top = ((s - HOURS_START*60) / 60) * PX_PER_HOUR;
+      const height = Math.max(36, ((e - s) / 60) * PX_PER_HOUR);
+
+      // compute overlap column
+      let col = 0;
+      for(;;){
+        const conflict = placed.some(p => p.col===col && rangesOverlap(s,e,p.s,p.e));
+        if(!conflict) break;
+        col++;
+      }
+      placed.push({col, s, e});
+      const maxCols = Math.max(...placed.map(p=>p.col))+1;
+
+      const block = document.createElement("div");
+      block.className = "taskBlock";
+      block.style.top = top + "px";
+      block.style.height = height + "px";
+
+      // width with columns
+      const gutter = 6;
+      const totalPad = 16; // left+right base
+      const usable = lane.clientWidth - totalPad - (gutter*(maxCols-1));
+      const w = usable / maxCols;
+      block.style.left = (8 + col*(w+gutter)) + "px";
+      block.style.width = Math.max(140, w) + "px";
+      block.style.right = "auto";
+
+      const c = colors[t.colorKey] || colors.crimson;
+      block.style.background = `linear-gradient(180deg, ${hexToRgba(c, .38)}, ${hexToRgba(c, .18)})`;
+
+      block.innerHTML = `
+        <div class="top">
+          <div>${escapeHtml(t.title||"Untitled")}</div>
+          <div class="pill ${t.done ? "done":""}">${t.done ? "✓" : "□"} ${t.start}</div>
+        </div>
+        <div class="small">
+          <span class="pill">${Math.round((t.durMin||0)/5)*5} min</span>
+          ${t.mendo ? `<span class="pill mendo">Mendokusai</span>` : ``}
+          ${t.goalId ? `<span class="pill">Goal linked</span>` : ``}
+        </div>
+        ${t.note ? `<div class="note">${escapeHtml(t.note)}</div>` : ``}
+      `;
+      // toggle done on click
+      block.onclick = () => { toggleDone(t.id); };
+      lane.appendChild(block);
+    });
+  }
+
+  function renderCalendar(){
+    const grid = $("calGrid");
+    grid.innerHTML = "";
+
+    const y = currentDate.getFullYear();
+    const m = currentDate.getMonth();
+
+    const first = new Date(y, m, 1);
+    const startDow = first.getDay(); // 0 Sun
+    const daysInMonth = new Date(y, m+1, 0).getDate();
+
+    // we render 42 cells (6 weeks)
+    const cells = 42;
+    const prevDays = (startDow + 7) % 7;
+    const prevMonthDays = new Date(y, m, 0).getDate();
+
+    for(let i=0; i<cells; i++){
+      const cell = document.createElement("div");
+      cell.className = "dayCell";
+
+      let dayNum, cellDate, muted=false;
+      if(i < prevDays){
+        dayNum = prevMonthDays - prevDays + i + 1;
+        cellDate = new Date(y, m-1, dayNum);
+        muted = true;
+      }else if(i >= prevDays + daysInMonth){
+        dayNum = i - (prevDays + daysInMonth) + 1;
+        cellDate = new Date(y, m+1, dayNum);
+        muted = true;
+      }else{
+        dayNum = i - prevDays + 1;
+        cellDate = new Date(y, m, dayNum);
+      }
+      if(muted) cell.classList.add("muted");
+      const key = ymd(cellDate);
+      if(key === ymd(new Date())) cell.classList.add("today");
+
+      const dayData = state.days[key];
+      const previews = (dayData && Array.isArray(dayData.tasks)) ? dayData.tasks.slice().sort((a,b)=>a.start.localeCompare(b.start)) : [];
+
+      cell.innerHTML = `
+        <div class="d">${dayNum}</div>
+        <div class="preview">
+          ${previews.slice(0,3).map(t => `
+            <span class="previewItem"><span class="dot" style="background:${hexToRgba(colors[t.colorKey]||colors.crimson,.55)}"></span>${escapeHtml(t.title||"Untitled")}</span>
+          `).join("")}
+        </div>
+      `;
+
+      cell.title = "Open day " + key;
+      cell.onclick = () => {
+        currentKey = key;
+        currentDate = new Date(key+"T12:00:00");
+        $("pickDate").value = currentKey;
+        renderAll();
+        // small behavior: if muted, monthMeta should follow that date too
+      };
+
+      grid.appendChild(cell);
+    }
+  }
+
+  function buildDow(){
+    const dow = $("dow");
+    dow.innerHTML = "";
+    const names = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    names.forEach(n=>{
+      const el = document.createElement("div");
+      el.className="calDow";
+      el.textContent = n;
+      dow.appendChild(el);
+    });
+  }
+
+  function renderDetails(){
+    const body = $("detailBody");
+    const day = getDay();
+    const tasks = [...day.tasks].sort((a,b)=> a.start.localeCompare(b.start));
+    body.innerHTML = "";
+
+    tasks.forEach((t, idx) => {
+      const tr = document.createElement("tr");
+      const c = colors[t.colorKey] || colors.crimson;
+      const dur = t.durMin || 0;
+
+      tr.innerHTML = `
+        <td>
+          <div class="rowSwatch">
+            <div class="swatch" style="background:${hexToRgba(c,.55)}"></div>
+            <div style="min-width:0">
+              <div class="rowTitle">
+                <span>${escapeHtml(t.title||"Untitled")}</span>
+                <span class="tinyBtn ${t.done ? "done":""}" data-done="${t.id}">${t.done ? "✓ Done":"Mark Done"}</span>
+                <span class="tinyBtn ${t.mendo ? "mendo":""}" data-mendo="${t.id}">${t.mendo ? "Mendokusai":"Mendokusai Start"}</span>
+                <span class="tinyBtn goal" data-goal="${t.id}">${t.goalId ? "Change Goal":"Connect to Goal"}</span>
+              </div>
+              <div class="muted" style="margin-top:6px; font-size:12px">
+                ${t.goalId ? "Linked to: <b>"+escapeHtml(getGoalName(t.goalId))+"</b>" : "Not linked to a goal."}
+              </div>
+            </div>
+          </div>
+        </td>
+        <td><b>${t.start}</b><div class="muted" style="margin-top:6px">${endTime(t.start, dur)}</div></td>
+        <td><b>${dur}</b> min</td>
+        <td>${t.note ? escapeHtml(t.note) : "<span class='muted'>No notes.</span>"}</td>
+      `;
+      body.appendChild(tr);
+    });
+
+    body.querySelectorAll("[data-done]").forEach(b=>{
+      b.onclick = () => toggleDone(b.getAttribute("data-done"));
+    });
+    body.querySelectorAll("[data-mendo]").forEach(b=>{
+      b.onclick = () => toggleMendo(b.getAttribute("data-mendo"));
+    });
+    body.querySelectorAll("[data-goal]").forEach(b=>{
+      const tid = b.getAttribute("data-goal");
+      openGoalPicker(tid);
+    });
+
+    renderSuccess();
+  }
+
+  function renderSuccess(){
+    const day = getDay();
+    const tasks = day.tasks || [];
+    const total = tasks.reduce((s,t)=> s + (t.durMin||0), 0);
+    const doneTotal = tasks.filter(t=>t.done).reduce((s,t)=> s + (t.durMin||0), 0);
+    const pct = total ? Math.round((doneTotal/total)*100) : 0;
+    $("successMeta").textContent = `${pct}% complete`;
+    $("piePct").textContent = `${pct}%`;
+
+    // pie segments only for done tasks, plus remainder as paper
+    let stops = [];
+    if(total>0){
+      let acc = 0;
+      const doneTasks = tasks.filter(t=>t.done).sort((a,b)=> (b.durMin||0)-(a.durMin||0));
+      doneTasks.forEach(t=>{
+        const frac = (t.durMin||0)/total;
+        const start = acc;
+        acc += frac;
+        const end = acc;
+        const c = colors[t.colorKey] || colors.crimson;
+        stops.push({start, end, color: hexToRgba(c, .62), title: t.title||"Untitled"});
+      });
+      if(acc < 1){
+        stops.push({start: acc, end: 1, color: "rgba(59,50,40,.10)", title: "Remaining"});
+      }
+    }else{
+      stops = [{start:0, end:1, color:"rgba(59,50,40,.10)", title:"Nothing yet"}];
+    }
+
+    const gradient = stops.map(s => `${s.color} ${Math.round(s.start*360)}deg ${Math.round(s.end*360)}deg`).join(", ");
+    $("pie").style.background = `conic-gradient(from 0deg, ${gradient})`;
+
+    const legend = $("legend");
+    if(total===0){
+      legend.innerHTML = `<div class="muted">Add tasks to get a chart. Shocking, I know.</div>`;
+    }else{
+      const doneTasks = tasks.filter(t=>t.done);
+      const remMin = total - doneTotal;
+      legend.innerHTML = `
+        ${doneTasks.map(t => `
+          <div class="legendItem">
+            <div class="sw" style="background:${hexToRgba(colors[t.colorKey]||colors.crimson,.62)}"></div>
+            <div><b>${escapeHtml(t.title||"Untitled")}</b> <span class="muted">(${Math.round(((t.durMin||0)/total)*100)}%)</span></div>
+          </div>
+        `).join("")}
+        <div class="legendItem">
+          <div class="sw" style="background:rgba(59,50,40,.10)"></div>
+          <div><b>Remaining</b> <span class="muted">(${total?Math.round((remMin/total)*100):0}%)</span></div>
+        </div>
+      `;
+    }
+  }
+
+  function renderGoals(){
+    const host = $("goals");
+    const goals = state.goals || [];
+    if(goals.length===0){
+      host.innerHTML = `<div class="muted">No goals yet. Add one. Or don’t. Humans are unpredictable.</div>`;
+      return;
+    }
+    host.innerHTML = goals.map(g=>{
+      const pct = g.targetHours ? clamp((g.currentHours/g.targetHours)*100, 0, 100) : 0;
+      return `
+        <div class="goalItem">
+          <div class="goalTop">
+            <div class="name">${escapeHtml(g.name)}</div>
+            <div class="nums">${fmtNum(g.currentHours)} / ${fmtNum(g.targetHours)} hours</div>
+          </div>
+          <div class="bar"><div class="fill" style="width:${pct}%;"></div></div>
+          <div class="goalActions">
+            <div class="tinyBtn" data-reset="${g.id}">Reset</div>
+            <div class="tinyBtn" data-delgoal="${g.id}">Delete</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    host.querySelectorAll("[data-reset]").forEach(b=>{
+      b.onclick = () => {
+        const id = b.getAttribute("data-reset");
+        const g = (state.goals||[]).find(x=>x.id===id);
+        if(!g) return;
+        g.currentHours = 0;
+        saveState();
+        renderGoals();
+      };
+    });
+
+    host.querySelectorAll("[data-delgoal]").forEach(b=>{
+      b.onclick = () => {
+        const id = b.getAttribute("data-delgoal");
+        // unlink tasks
+        Object.values(state.days||{}).forEach(d=>{
+          (d.tasks||[]).forEach(t=>{ if(t.goalId===id) t.goalId=null; });
+        });
+        state.goals = (state.goals||[]).filter(x=>x.id!==id);
+        saveState();
+        renderAll();
+      };
+    });
+  }
+
+  // goal picker for a task
+  let goalPickTaskId = null;
+  function openGoalPicker(taskId){
+    goalPickTaskId = taskId;
+    const list = $("goalPickList");
+    const goals = state.goals || [];
+    if(goals.length===0){
+      list.innerHTML = `<div class="item"><div>No goals exist.</div><div class="sub">Add one first.</div></div>`;
+    }else{
+      list.innerHTML = goals.map(g => `
+        <div class="item">
+          <div>
+            ${escapeHtml(g.name)}
+            <div class="sub">${fmtNum(g.currentHours)} / ${fmtNum(g.targetHours)} hours</div>
+          </div>
+          <div class="tinyBtn goal" data-pick="${g.id}">Pick</div>
+        </div>
+      `).join("") + `
+        <div class="item">
+          <div>Unlink from goal</div>
+          <div class="tinyBtn" data-pick="">Unlink</div>
+        </div>
+      `;
+      list.querySelectorAll("[data-pick]").forEach(b=>{
+        b.onclick = () => {
+          const gid = b.getAttribute("data-pick") || null;
+          setTaskGoal(goalPickTaskId, gid);
+          closeModal("goalPickModal");
+        };
+      });
+    }
+    openModal("goalPickModal");
+  }
+
+  function setTaskGoal(taskId, goalId){
+    const day = getDay();
+    const t = (day.tasks||[]).find(x=>x.id===taskId);
+    if(!t) return;
+    t.goalId = goalId;
+    saveState();
+    renderAll();
+  }
+
+  function getGoalName(id){
+    const g = (state.goals||[]).find(x=>x.id===id);
+    return g ? g.name : "Unknown Goal";
+  }
+
+  // toggles
+  function toggleDone(taskId){
+    const day = getDay();
+    const t = (day.tasks||[]).find(x=>x.id===taskId);
+    if(!t) return;
+
+    // when marking done and linked to a goal, add hours once.
+    // to avoid double counting, store a flag per task completion contribution.
+    if(!t._contrib) t._contrib = 0;
+
+    if(!t.done){
+      t.done = true;
+      if(t.goalId){
+        const g = (state.goals||[]).find(x=>x.id===t.goalId);
+        if(g){
+          const addHours = (t.durMin||0)/60;
+          g.currentHours = (g.currentHours||0) + addHours;
+          t._contrib += addHours;
+        }
+      }
+    }else{
+      // undo done: subtract contribution if any
+      t.done = false;
+      if(t.goalId && t._contrib){
+        const g = (state.goals||[]).find(x=>x.id===t.goalId);
+        if(g){
+          g.currentHours = Math.max(0, (g.currentHours||0) - t._contrib);
+        }
+        t._contrib = 0;
+      }
+    }
+
+    saveState();
+    renderAll();
+  }
+
+  function toggleMendo(taskId){
+    const day = getDay();
+    const t = (day.tasks||[]).find(x=>x.id===taskId);
+    if(!t) return;
+    t.mendo = !t.mendo;
+    saveState();
+    renderAll();
+  }
+
+  // Now line
+  function updateNowLine(){
+    const nowLine = $("nowLine");
+    const now = new Date();
+    const todayKey = ymd(now);
+    if(todayKey !== currentKey){
+      nowLine.style.display = "none";
+      return;
+    }
+    const mins = now.getHours()*60 + now.getMinutes();
+    if(mins < HOURS_START*60 || mins > HOURS_END*60){
+      nowLine.style.display = "none";
+      return;
+    }
+    nowLine.style.display = "block";
+    const top = ((mins - HOURS_START*60) / 60) * PX_PER_HOUR;
+    nowLine.style.top = top + "px";
+  }
+
+  setInterval(updateNowLine, 30*1000);
+
+  // Helpers
+  function toMinutes(hhmm){
+    const [h,m] = (hhmm||"00:00").split(":").map(x=>parseInt(x,10));
+    return (h||0)*60 + (m||0);
+  }
+  function endTime(start, durMin){
+    const m = toMinutes(start) + (durMin||0);
+    const hh = Math.floor(m/60);
+    const mm = m%60;
+    return `${pad(hh)}:${pad(mm)}`;
+  }
+  function rangesOverlap(s1,e1,s2,e2){
+    return Math.max(s1,s2) < Math.min(e1,e2);
+  }
+  function hexToRgba(hex, a){
+    const h = hex.replace("#","");
+    if(h.length!==6) return `rgba(0,0,0,${a})`;
+    const r = parseInt(h.slice(0,2),16);
+    const g = parseInt(h.slice(2,4),16);
+    const b = parseInt(h.slice(4,6),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+  function fmtNum(n){
+    const v = typeof n==="number" ? n : parseFloat(n)||0;
+    const rounded = Math.round(v*10)/10;
+    return (""+rounded).replace(/\.0$/,"");
+  }
+
+  // close overlay on background click (except gate)
+  document.querySelectorAll(".overlay").forEach(ov=>{
+    if(ov.id==="gate") return;
+    ov.addEventListener("click", (e)=>{
+      if(e.target === ov) ov.classList.remove("show");
+    });
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
