@@ -22,6 +22,3 @@ How to publish on GitHub Pages
    - Source: Deploy from a branch
    - Branch: main / root
 4) You’ll get a URL like https://<username>.github.io/<repo>/
-
-Password
-- 88106420
